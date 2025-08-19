@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:17
+    container_name: leave_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Jana8670*
+      POSTGRES_DB: leave_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  app:
+    build: .
+    container_name: leave_app
+    depends_on: [db]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/leave_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: Jana8670*
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: "true"
+    ports:
+      - "8080:8080"
+volumes:
+  pgdata:
